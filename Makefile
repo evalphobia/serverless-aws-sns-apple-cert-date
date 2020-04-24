@@ -1,5 +1,6 @@
 .PHONY: init build deploy
 
+GO111MODULE=on
 LINT_OPT := -E gofmt \
             -E golint \
 			-E gosec \
@@ -10,7 +11,7 @@ LINT_OPT := -E gofmt \
 
 init:
 	@type sls > /dev/null || npm install -g serverless@1.63.0
-	go get -v ./...
+	go mod download
 
 lint:
 	@type golangci-lint > /dev/null || go get -u github.com/golangci/golangci-lint/cmd/golangci-lint

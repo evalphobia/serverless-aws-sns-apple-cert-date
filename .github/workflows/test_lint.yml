@@ -25,5 +25,5 @@ jobs:
 
     - name: Lint
       run: |
-        go get -v ./...
+        go mod download
         make lint

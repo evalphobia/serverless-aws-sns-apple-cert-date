@@ -25,5 +25,5 @@ jobs:
 
     - name: Build
       run: |
-        go get -v ./...
+        go mod download
         make build
