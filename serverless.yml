@@ -1,0 +1,41 @@
+service:
+  name: serverless-sns-apns-cert-date
+  # awsKmsKeyArn: arn:aws:kms:ap-northeast-1:000000000000:key/aaaaaaaa-bbbb-cccc-dddd
+
+frameworkVersion: ">=1.63.0"
+
+provider:
+  name: aws
+  region: ap-northeast-1
+  runtime: go1.x
+  logRetentionInDays: 14
+  iamRoleStatements:
+    -  Effect: "Allow"
+       Action:
+         - "sns:GetPlatformApplicationAttributes"
+       Resource: "*"
+
+package:
+  exclude:
+    - ./**
+  include:
+    - ./bin/**
+
+functions:
+  check:
+    handler: bin/serverless
+    memorySize: 128
+    timeout: 119
+    environment:
+      ARN_LIST: >-
+        arn:aws:sns:ap-northeast-1:000000000000:app/APNS/app1
+        arn:aws:sns:ap-northeast-1:000000000000:app/APNS/app2
+        arn:aws:sns:ap-northeast-1:000000000000:app/APNS/app3
+        arn:aws:sns:ap-northeast-1:000000000000:app/APNS/app4
+      TIME_THRESHOLD: 30d10h # 30days and 10 hours before
+      FORCE_REPORT: true
+      # SLACK_WEBHOOK_URL_KMS: 'xxx'
+      SLACK_WEBHOOK_URL: https://hooks.slack.com/services/T00000000/B00000000/XXXXXXXXXXXXXXXXXXXXXXXX
+      SLACK_CHANNEL: '#channel'
+    events:
+      - schedule: cron(0 0 * * ? *)
