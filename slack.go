@@ -30,10 +30,14 @@ func sendToSlack(data SlackRequest) error {
 	}
 
 	buf := new(bytes.Buffer)
-	buf.ReadFrom(resp.Body)
+	_, err = buf.ReadFrom(resp.Body)
+	if err != nil {
+		return err
+	}
+
 	body := buf.String()
 	if body != "ok" {
-		return fmt.Errorf("Unknown response from Slack API: [%s]", body)
+		return fmt.Errorf("unknown response from Slack API: [%s]", body)
 	}
 	return nil
 }
