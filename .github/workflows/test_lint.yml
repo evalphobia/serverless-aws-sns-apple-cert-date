@@ -25,5 +25,5 @@ jobs:
 
     - name: Lint
       run: |
-        make init
+        go get -v ./...
         make lint
